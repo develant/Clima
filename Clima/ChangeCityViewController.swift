@@ -12,11 +12,24 @@ protocol ChangeCityDelegate {
     func userEnteredANewCityName(city: String)
 }
 
-class ChangeCityViewController: UIViewController {
+class ChangeCityViewController: UIViewController, UITextFieldDelegate {
     
     var delegate: ChangeCityDelegate?
     
     @IBOutlet weak var changeCityTextField: UITextField!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        changeCityTextField.delegate = self
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        getWeatherPressed(self)
+        textField.resignFirstResponder()
+        return true
+    }
     
     @IBAction func getWeatherPressed(_ sender: AnyObject) {
     
@@ -24,15 +37,9 @@ class ChangeCityViewController: UIViewController {
         
         delegate?.userEnteredANewCityName(city: cityName)
         self.dismiss(animated: true, completion: nil)
-        
     }
-    
-    
-
-    //This is the IBAction that gets called when the user taps the back button. It dismisses the ChangeCityViewController.
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
     }
-    
 }
